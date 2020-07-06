@@ -1,0 +1,18 @@
+{
+  "name": "jue-ju-wen-zhang",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "lowdb": "^1.0.0",
+    "md5": "^2.2.1",
+    "yaml": "^1.10.0"
+  }
+}

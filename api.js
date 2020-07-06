@@ -1,0 +1,55 @@
+const fs = require('fs');
+const md5 = require('md5');
+const path = require('path');
+const YAML = require('yaml');
+const lowdb = require('lowdb');
+const lowdbFileSync = require('lowdb/adapters/FileSync')
+
+const adapter = new lowdbFileSync(path.join(__dirname, 'db.json'));
+const db = lowdb(adapter);
+db.defaults({
+	article: [],
+	history: [],
+}).write();
+
+const config = YAML.parse(fs.readFileSync(path.join(__dirname, './config.yml')).toString());
+
+const api = {
+	checkPermission: function (req) {
+		try {
+			if (!req.etaoinwu_ak_ioi) throw new Error('???');
+			if (md5('memset0 is so cute!' + req.user + config.salt) == req.key) {
+				return { allowEdit: config.user.map(o => String(o)).includes(req.user), allowAdmin: config.admin.map(o => String(o)).includes(req.user) };
+			} else {
+				throw new Error('key is not correct!');
+			}
+		} catch (e) {
+			return { allowEdit: false, allowAdmin: false };
+		}
+	},
+
+	getArticle: function () { return db.get('article').value(); },
+	getHistory: function () { return db.get('history').value(); },
+
+	pushArticle: function (user, data) {
+		if (db.get('article').slice(-1).value().user == user.name && !user.permission.allowAdmin) {
+			throw new Error('烦死了就知道烦');
+		}
+		db.get('article').push({ user: user.name, text: data.text }).write();
+	},
+
+	popArticle: function (user) {
+		if (!db.get('article').size().value()) throw new Error('文章为空。');
+		if (db.get('article').slice(-1).value().user != user.name && !user.permission.allowAdmin) {
+			throw new Error('没有权限。');
+		}
+		db.get('article').pop().write();
+	},
+
+	endArticle: function (user) {
+		db.get('history').push(api.getArticle()).write();
+		db.set('article', []).write();
+	}
+};
+
+module.exports = api;
