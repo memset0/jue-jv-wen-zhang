@@ -42,13 +42,21 @@ $('#login').click(function () {
 
 $('#send').click(function () {
 	if (!is_login) return throwError('你是谁啊？');
-	if (!$('#text').val()) return throwError('你想说啥？');
-	if ($('#text').val().length > 5) return throwError('你话怎么这么长？');
+	let text = $('#text').val().replace(/{|}|\s/g, '');
+	if (!text) return throwError('你想说啥？');
+	if (text.length > 5) return throwError('你话怎么这么长？');
 	ws.send(connectData({
 		type: 'push_article',
-		text: $('#text').val(),
+		text: text,
 	}));
 	$('#text').val('');
+});
+
+$('#text').bind('keypress', function (e) {
+	e = e || window.event;
+	if (e.keyCode == 13) {
+		setTimeout(() => $('#send').click(), 10);
+	}
 });
 
 $('#undo').click(function () {

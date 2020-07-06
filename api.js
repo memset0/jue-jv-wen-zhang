@@ -32,6 +32,7 @@ const api = {
 	getHistory: function () { return db.get('history').value(); },
 
 	pushArticle: function (user, data) {
+		data.text = data.text.replace(/{|}|\s/g, '');
 		if (typeof data.text !== 'string') {
 			throw new Error('你又图谋不轨？');
 		}
