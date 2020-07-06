@@ -23,6 +23,20 @@ function connectData(data) {
 
 function renderArticle(article) {
 	$('#article').text(article.map(o => o.text).join(''));
+	if (article.length) {
+		$('#edit_history').html('');
+		article.forEach(data => $('#edit_history').append(
+			'<tr>' +
+			'<td>' +
+			'<h4 class="ui image header">' +
+			'<img src="http://q1.qlogo.cn/g?b=qq&nk=' + data.user + '&s=40" class="ui mini rounded image" />' +
+			'<div class="content">' + data.user + '</div>' +
+			'</div>' +
+			'</td>' +
+			'<td><span style="height: 100%; vertical-align: middle; margin-left: .5em">' + data.text + '</span></td>' +
+			'</tr>'
+		));
+	}
 }
 
 function renderHistory(history) {
