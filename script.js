@@ -25,7 +25,7 @@ function renderArticle(article) {
 	$('#article').text(article.map(o => o.text).join(''));
 	if (article.length) {
 		$('#edit_history').html('');
-		article.forEach(data => $('#edit_history').append(
+		article.reverse().forEach(data => $('#edit_history').append(
 			'<tr>' +
 			'<td>' +
 			'<h4 class="ui image header">' +
