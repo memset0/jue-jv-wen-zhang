@@ -24,7 +24,7 @@ app.ws('/', function (ws, req) {
 			event = JSON.parse(event);
 			let data = event.data;
 			let user = { name: event.user, permission: api.checkPermission(event) };
-			// console.log('ws message', user, data);
+			console.log(user, data);
 			({
 				push_article: function (ws, user, data) {
 					api.pushArticle(user, data);
@@ -39,7 +39,6 @@ app.ws('/', function (ws, req) {
 					updateAllArticle(), updateAllHistory();
 				},
 				login: function (ws, user) {
-					console.log(user);
 					if (user && user.permission && user.permission.allowEdit) {
 						ws.send(JSON.stringify({ type: 'login' }));
 						updateAllArticle(), updateAllHistory();
@@ -53,7 +52,7 @@ app.ws('/', function (ws, req) {
 			ws.send(JSON.stringify({ type: 'error', message: e }));
 		}
 	});
-	ws.onclose=function(){
+	ws.onclose = function () {
 		clients = clients.filter(client => client !== ws);
 	};
 });
