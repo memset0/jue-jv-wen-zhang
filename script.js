@@ -23,21 +23,19 @@ function connectData(data) {
 
 function renderArticle(article) {
 	$('#article').text(article.map(o => o.text).join(''));
-	if (article.length) {
-		$('#edit_history').html('');
-		article.reverse().forEach(data => $('#edit_history').append(
-			'<tr>' +
-			'<td>' +
-			'<h4 class="ui image header">' +
-			'<img src="http://q1.qlogo.cn/g?b=qq&nk=' + data.user + '&s=40" class="ui mini rounded image" />' +
-			'<div class="content">' + data.user + '</div>' +
-			'</div>' +
-			'</td>' +
-			'<td>' + data.text + '</td>' +
-			'<td>' + (data.time ? data.time : 'null') + '</td>' +
-			'</tr>'
-		));
-	}
+	$('#edit_history').html('');
+	article.reverse().forEach(data => $('#edit_history').append(
+		'<tr>' +
+		'<td>' +
+		'<h4 class="ui image header">' +
+		'<img src="http://q1.qlogo.cn/g?b=qq&nk=' + data.user + '&s=40" class="ui mini rounded image" />' +
+		'<div class="content">' + data.user + '</div>' +
+		'</div>' +
+		'</td>' +
+		'<td>' + data.text + '</td>' +
+		'<td>' + (data.time ? data.time : 'null') + '</td>' +
+		'</tr>'
+	));
 }
 
 function renderHistory(history) {
@@ -49,10 +47,15 @@ let ws = new WebSocket('WebSocketUrl');
 let is_login = false;
 
 $('#login').click(function () {
-	saveKey();
-	ws.send(connectData({
-		type: 'login'
-	}));
+	if ($('#user').val() != localStorage.getItem('mem.jjwz.user') || $('#key').val() != localStorage.getItem('mem.jjwz.key')) {
+		is_login = false;
+	}
+	if (!is_login) {
+		saveKey();
+		ws.send(connectData({
+			type: 'login'
+		}));
+	}
 })
 
 $('#send').click(function () {
