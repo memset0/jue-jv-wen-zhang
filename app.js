@@ -1,16 +1,16 @@
 const fs = require('fs');
-const md5 = require('md5');
 const path = require('path');
+const YAML = require('yaml');
 const express = require('express');
 const expressWs = require('express-ws');
 
 const api = require('./api.js');
-
 let app = express();
 expressWs(app);
 
+const config = YAML.parse(fs.readFileSync(path.join(__dirname, './config.yml')).toString());
 app.get('/', function (req, res) { res.send(fs.readFileSync(path.join(__dirname, './index.html')).toString()); });
-app.get('/script.js', function (req, res) { res.send(fs.readFileSync(path.join(__dirname, './script.js')).toString()); });
+app.get('/script.js', function (req, res) { res.send(fs.readFileSync(path.join(__dirname, './script.js')).toString().replace('WebSocketUrl', config.ws)); });
 
 app.ws('/', function (ws, req) {
 	ws.on('message', function (event) {

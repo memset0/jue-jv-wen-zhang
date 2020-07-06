@@ -30,7 +30,7 @@ function renderHistory(history) {
 }
 
 loadKey();
-let ws = new WebSocket("ws://localhost:4514");
+let ws = new WebSocket('WebSocketUrl');
 let is_login = false;
 
 $('#login').click(function () {
