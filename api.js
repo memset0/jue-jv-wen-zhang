@@ -32,18 +32,22 @@ const api = {
 	getHistory: function () { return db.get('history').value(); },
 
 	pushArticle: function (user, data) {
-		if (db.get('article').slice(-1).value().user == user.name && !user.permission.allowAdmin) {
+		if (typeof data.text !== 'string') {
+			throw new Error('你又图谋不轨？');
+		}
+		if (db.get('article').last().value().user == user.name && !user.permission.allowAdmin) {
 			throw new Error('烦死了就知道烦');
 		}
-		if(data.text.length > 5) {
+		if (data.text.length > 5) {
 			throw new Error('你是 mcfx 🐴？');
 		}
 		db.get('article').push({ user: user.name, text: data.text }).write();
 	},
 
 	popArticle: function (user) {
+		console.log('pop', user);
 		if (!db.get('article').size().value()) throw new Error('文章为空。');
-		if (db.get('article').slice(-1).value().user != user.name && !user.permission.allowAdmin) {
+		if (db.get('article').last().value().user != user.name && !user.permission.allowAdmin) {
 			throw new Error('没有权限。');
 		}
 		db.get('article').pop().write();

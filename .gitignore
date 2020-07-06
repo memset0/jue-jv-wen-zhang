@@ -1,6 +1,7 @@
 .DS_Store
 config.yml
 db.json
+gen.js
 
 # Logs
 logs
