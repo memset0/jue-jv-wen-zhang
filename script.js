@@ -33,7 +33,8 @@ function renderArticle(article) {
 			'<div class="content">' + data.user + '</div>' +
 			'</div>' +
 			'</td>' +
-			'<td><span style="height: 100%; vertical-align: middle; margin-left: .5em">' + data.text + '</span></td>' +
+			'<td>' + data.text + '</td>' +
+			'<td>' + (data.time ? data.time : 'null') + '</td>' +
 			'</tr>'
 		));
 	}
