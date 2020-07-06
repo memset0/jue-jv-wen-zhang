@@ -35,6 +35,9 @@ const api = {
 		if (db.get('article').slice(-1).value().user == user.name && !user.permission.allowAdmin) {
 			throw new Error('烦死了就知道烦');
 		}
+		if(data.text.length > 5) {
+			throw new Error('你是 mcfx 🐴？');
+		}
 		db.get('article').push({ user: user.name, text: data.text }).write();
 	},
 
